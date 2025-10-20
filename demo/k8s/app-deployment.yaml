@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kaiburr-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kaiburr-task-app
+  template:
+    metadata:
+      labels:
+        app: kaiburr-task-app
+    spec:
+      containers:
+      - name: kaiburr-task-app
+        image: kaiburr-task-app:latest # The Docker image you built
+        imagePullPolicy: IfNotPresent # Tells K8s to use the local image
+        ports:
+        - containerPort: 8080
+        env:
+        - name: spring.data.mongodb.uri
+          value: "mongodb://mongodb-service:27017/kaiburr_db" # Connects to the MongoDB service
